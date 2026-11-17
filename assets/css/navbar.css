@@ -1,0 +1,472 @@
+/* ==========================================================================
+   SMART TOURISM MANAGEMENT SYSTEM
+   Navbar Component Stylesheet (navbar.css)
+   Depends on: style.css (uses its :root variables)
+   Load order: style.css  ->  navbar.css
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. NAVBAR-SPECIFIC VARIABLES
+   (extends the global tokens from style.css)
+   -------------------------------------------------------------------------- */
+:root {
+  --navbar-height: 72px;
+  --navbar-bg-transparent: rgba(255, 255, 255, 0.55);
+  --navbar-bg-scrolled: rgba(255, 255, 255, 0.96);
+  --navbar-blur: 8px;
+  --navbar-shadow-scrolled: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+  --navbar-link-color: #374151;
+  --navbar-link-active-color: var(--primary-color);
+  --navbar-link-active-bg: var(--primary-color-light);
+  --navbar-dashboard-color: #0f766e;
+
+  --navbar-brand-dark: #14532d;
+  --navbar-brand-light: #22c55e;
+
+  --navbar-z: 1000;
+  --navbar-transition: 0.3s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. NAVBAR SHELL (fixed, transparent -> opaque on scroll)
+   -------------------------------------------------------------------------- */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--navbar-height);
+  z-index: var(--navbar-z);
+  background-color: var(--navbar-bg-transparent);
+  backdrop-filter: blur(var(--navbar-blur));
+  -webkit-backdrop-filter: blur(var(--navbar-blur));
+  transition: background-color var(--navbar-transition), box-shadow var(--navbar-transition);
+}
+
+/* Toggled by JS when window.scrollY > threshold (see navbar.js) */
+.navbar.navbar-scrolled {
+  background-color: var(--navbar-bg-scrolled);
+  box-shadow: var(--navbar-shadow-scrolled);
+}
+
+.navbar-container {
+  max-width: var(--container-max-width);
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* --------------------------------------------------------------------------
+   3. BRAND / LOGO
+   -------------------------------------------------------------------------- */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.navbar-logo-badge {
+  width: 45px;
+  height: 45px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid #14532d;
+ /* background: linear-gradient(135deg, var(--navbar-brand-dark) 0%, var(--navbar-brand-light) 100%);*/
+  color: #ffffff;
+  font-family: var(--font-primary);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.navbar-brand-text {
+  font-family: var(--font-primary);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-lg);
+  white-space: nowrap;
+}
+
+.navbar-brand-text .brand-dark {
+  color: var(--navbar-brand-dark);
+}
+
+.navbar-brand-text .brand-light {
+  color: var(--navbar-brand-light);
+}
+
+/* --------------------------------------------------------------------------
+   4. DESKTOP MENU
+   -------------------------------------------------------------------------- */
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.navbar-link {
+  font-family: var(--font-primary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--navbar-link-color);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--border-radius-pill);
+  transition: background-color var(--navbar-transition), color var(--navbar-transition);
+}
+
+.navbar-link:hover,
+.navbar-link:focus-visible {
+  color: var(--primary-color);
+  background-color: var(--primary-color-light);
+  text-decoration: none;
+}
+
+.navbar-link.active {
+  color: var(--navbar-link-active-color);
+  background-color: var(--navbar-link-active-bg);
+  font-weight: var(--fw-semibold);
+}
+
+/* --------------------------------------------------------------------------
+   5. NAVBAR ACTIONS (Dashboard + Login/Register)
+   -------------------------------------------------------------------------- */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.navbar-dashboard-link {
+  font-family: var(--font-primary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--navbar-dashboard-color);
+  transition: color var(--navbar-transition), opacity var(--navbar-transition);
+}
+
+.navbar-dashboard-link:hover,
+.navbar-dashboard-link:focus-visible {
+  color: var(--primary-color-dark);
+  text-decoration: none;
+  opacity: 0.85;
+}
+
+.navbar-login-btn {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-primary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--navbar-brand-dark) 0%, var(--primary-color) 100%);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--border-radius-pill);
+  transition: transform var(--navbar-transition), box-shadow var(--navbar-transition), filter var(--navbar-transition);
+}
+
+.navbar-login-btn:hover,
+.navbar-login-btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--box-shadow-hover);
+  filter: brightness(1.05);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   6. HAMBURGER TOGGLE (mobile only)
+   Three bars -> animates into an X when .active is toggled by JS
+   -------------------------------------------------------------------------- */
+.navbar-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: background-color var(--navbar-transition);
+}
+
+.navbar-toggle:hover,
+.navbar-toggle:focus-visible {
+  background-color: var(--primary-color-light);
+}
+
+.navbar-toggle-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--navbar-brand-dark);
+  border-radius: var(--border-radius-pill);
+  transition: transform var(--navbar-transition), opacity var(--navbar-transition);
+}
+
+/* Bars morph into an X */
+.navbar-toggle.active .navbar-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.navbar-toggle.active .navbar-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar-toggle.active .navbar-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* --------------------------------------------------------------------------
+   7. MOBILE MENU PANEL (slide-down / full panel, matches reference image)
+   -------------------------------------------------------------------------- */
+.navbar-mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  box-shadow: var(--box-shadow-hover);
+  z-index: calc(var(--navbar-z) - 1);
+  padding: var(--space-5);
+  transform: translateY(-100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform var(--navbar-transition), opacity var(--navbar-transition), visibility var(--navbar-transition);
+}
+
+.navbar-mobile-menu.active {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.navbar-mobile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+}
+
+.navbar-mobile-close {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--navbar-brand-dark);
+  cursor: pointer;
+  padding: var(--space-2);
+  transition: color var(--navbar-transition), transform var(--navbar-transition);
+}
+
+.navbar-mobile-close:hover,
+.navbar-mobile-close:focus-visible {
+  color: var(--primary-color);
+  transform: rotate(90deg);
+}
+
+.navbar-mobile-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.navbar-mobile-link {
+  font-family: var(--font-primary);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
+  color: var(--navbar-link-color);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--border-radius);
+  transition: background-color var(--navbar-transition), color var(--navbar-transition);
+}
+
+.navbar-mobile-link:hover,
+.navbar-mobile-link:focus-visible {
+  background-color: var(--primary-color-light);
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.navbar-mobile-link.active {
+  background-color: var(--navbar-link-active-bg);
+  color: var(--navbar-link-active-color);
+  font-weight: var(--fw-semibold);
+}
+
+.navbar-mobile-login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-family: var(--font-primary);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--navbar-brand-dark) 0%, var(--primary-color) 100%);
+  padding: var(--space-4);
+  border-radius: var(--border-radius);
+  transition: filter var(--navbar-transition), transform var(--navbar-transition);
+}
+
+.navbar-mobile-login-btn:hover,
+.navbar-mobile-login-btn:focus-visible {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Optional dim backdrop behind the mobile panel */
+.navbar-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.35);
+  z-index: calc(var(--navbar-z) - 2);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--navbar-transition), visibility var(--navbar-transition);
+}
+
+.navbar-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Lock page scroll while the mobile menu is open (JS toggles this on <body>) */
+body.navbar-open {
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   8. RESPONSIVE BREAKPOINTS
+   -------------------------------------------------------------------------- */
+
+/* Tablet and below: switch to hamburger */
+@media (max-width: 991.98px) {
+  .navbar-menu,
+  .navbar-actions {
+    display: none;
+  }
+
+  .navbar-toggle {
+    display: flex;
+  }
+}
+
+/* Small phones: tighten spacing */
+@media (max-width: 575.98px) {
+  .navbar-container {
+    padding: 0 var(--space-4);
+  }
+
+  .navbar-brand-text {
+    font-size: var(--fs-base);
+  }
+
+  .navbar-mobile-menu {
+    padding: var(--space-4);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. ACCESSIBILITY / FOCUS STATES
+   -------------------------------------------------------------------------- */
+.navbar a:focus-visible,
+.navbar button:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar,
+  .navbar-mobile-menu,
+  .navbar-toggle-bar,
+  .navbar-backdrop {
+    transition: none;
+  }
+}
+
+/* Logged-in greeting next to the Logout button (added for favourites/reviews) */
+.navbar-user-greeting {
+  font-family: var(--font-primary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--navbar-dashboard-color, var(--text-color));
+}
+
+/* =====================================================================
+   NAVBAR — dashboard button + account menu (logged-in travellers)
+   ===================================================================== */
+.navbar-actions { display: flex; align-items: center; gap: 12px; }
+
+.nav-dash-btn {
+  position: relative; display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; color: #146339;
+  background: #e6f5ec; border: 1.5px solid #cfe9d9; text-decoration: none;
+  transition: transform .25s cubic-bezier(.22,1,.36,1), background .25s, box-shadow .25s, color .25s;
+}
+.nav-dash-btn i { font-size: 15px; }
+.nav-dash-btn:hover { background: #1f8a54; color: #fff; border-color: #1f8a54; transform: translateY(-2px); box-shadow: 0 12px 22px -12px rgba(31,138,84,.9); }
+.nav-dash-badge {
+  min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: #f4a627; color: #3b2a05;
+  font-size: 11px; font-weight: 800; display: inline-grid; place-items: center; box-shadow: 0 0 0 2px #fff;
+  animation: nav-pulse 2.4s ease-out infinite;
+}
+
+.nav-account { position: relative; }
+.nav-account > summary { list-style: none; cursor: pointer; }
+.nav-account > summary::-webkit-details-marker { display: none; }
+.nav-account-trigger {
+  display: inline-flex; align-items: center; gap: 9px; padding: 5px 12px 5px 5px; border-radius: 999px;
+  border: 1.5px solid #e2e6e4; background: #fff; color: #1d2a24; font-weight: 700; font-size: 14px;
+  transition: border-color .25s, box-shadow .25s, transform .25s;
+}
+.nav-account-trigger:hover { border-color: #cfe9d9; box-shadow: 0 10px 20px -14px rgba(16,24,20,.4); transform: translateY(-1px); }
+.nav-chevron { font-size: 11px; color: #6b7280; transition: transform .3s cubic-bezier(.22,1,.36,1); }
+.nav-account[open] .nav-chevron { transform: rotate(180deg); }
+.nav-avatar {
+  width: 32px; height: 32px; border-radius: 50%; display: inline-grid; place-items: center; flex-shrink: 0;
+  background: linear-gradient(135deg, #f4a627, #ffc857); color: #4a3205; font-size: 12px; font-weight: 800;
+}
+.nav-avatar.lg { width: 44px; height: 44px; font-size: 15px; border-radius: 14px; background: linear-gradient(135deg, #1f8a54, #2fb573); color: #fff; }
+
+.nav-account-menu {
+  position: absolute; right: 0; top: calc(100% + 12px); width: 260px; padding: 10px; z-index: 2000;
+  background: #fff; border: 1px solid #e2e6e4; border-radius: 18px; box-shadow: 0 30px 60px -24px rgba(16,24,20,.35);
+  transform-origin: top right; animation: nav-menu-in .3s cubic-bezier(.22,1,.36,1);
+}
+@keyframes nav-menu-in { from { opacity: 0; transform: translateY(-8px) scale(.97); } to { opacity: 1; transform: none; } }
+.nav-account-head { display: flex; align-items: center; gap: 12px; padding: 10px 10px 12px; border-bottom: 1px solid #eef2f0; margin-bottom: 6px; }
+.nav-account-head strong { display: block; font-size: 14px; color: #1d2a24; }
+.nav-account-head small { font-size: 12px; color: #6b7280; }
+.nav-account-menu a, .nav-mobile-account a {
+  display: flex; align-items: center; gap: 11px; padding: 10px 12px; border-radius: 12px; font-size: 14px; font-weight: 600;
+  color: #2b2f33; text-decoration: none; transition: background .2s, color .2s, padding-left .25s;
+}
+.nav-account-menu a i, .nav-mobile-account a i { width: 18px; text-align: center; color: #1f8a54; }
+.nav-account-menu a:hover, .nav-mobile-account a:hover { background: #e6f5ec; color: #146339; padding-left: 16px; }
+.nav-account-logout { margin-top: 4px; border-top: 1px solid #eef2f0; border-radius: 0 0 12px 12px; }
+.nav-account-logout, .nav-account-logout i { color: #d64545 !important; }
+.nav-account-logout:hover { background: #fbe9e9 !important; color: #a52d2d !important; }
+.nav-mini-badge { margin-left: auto; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: #f4a627; color: #3b2a05; font-size: 11px; font-weight: 800; display: inline-grid; place-items: center; }
+.nav-account-menu a:has(.nav-mini-badge) { display: flex; }
+
+.nav-dash-btn--mobile { margin: 16px 0 8px; width: 100%; justify-content: center; }
+.nav-mobile-account { display: flex; flex-direction: column; gap: 2px; margin-top: 6px; }
+.nav-mobile-account a { color: #fff; }
+.nav-mobile-account a i { color: #7ee2a8; }
+.nav-mobile-account a:hover { background: rgba(255,255,255,.1); color: #fff; }
+.nav-mobile-account .nav-account-logout { color: #ffb4b4 !important; }
+
+@keyframes nav-pulse { 0% { box-shadow: 0 0 0 0 rgba(244,166,39,.5); } 70% { box-shadow: 0 0 0 8px rgba(244,166,39,0); } 100% { box-shadow: 0 0 0 0 rgba(244,166,39,0); } }
+@media (max-width: 1100px) { .nav-dash-btn span:not(.nav-dash-badge) { display: none; } .nav-dash-btn { padding: 10px 12px; } }
+@media (prefers-reduced-motion: reduce) { .nav-account-menu, .nav-dash-badge { animation: none !important; } }

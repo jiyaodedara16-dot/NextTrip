@@ -1,0 +1,935 @@
+/* ==========================================================================
+   PLACE DETAILS PAGE
+   Depends on: style.css (variables, resets, utilities)
+   ========================================================================== */
+
+:root {
+  --pd-crowd-low: #1fa96a;
+  --pd-crowd-medium: #f4a627;
+  --pd-crowd-high: #e2513f;
+  --pd-radius: var(--border-radius-lg, 14px);
+  --pd-shadow: var(--box-shadow, 0 1px 3px rgba(15, 40, 27, 0.08));
+  --pd-shadow-hover: var(--box-shadow-hover, 0 12px 28px -12px rgba(15, 40, 27, 0.22));
+}
+
+.pd {
+  background: var(--background-color);
+  padding: 96px 0 64px;
+  font-family: var(--font-primary);
+}
+
+.pd-container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.pd-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: var(--fw-medium);
+  color: var(--primary-color);
+  text-decoration: none;
+  margin-bottom: 18px;
+}
+
+.pd-back:hover { text-decoration: underline; }
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+.pd-header__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pd-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--border-radius-pill);
+  font-size: 0.78rem;
+  font-weight: var(--fw-semibold);
+}
+
+.pd-badge--category {
+  background: var(--primary-color-light);
+  color: var(--primary-color-dark);
+}
+
+.pd-badge--crowd { color: #fff; }
+.pd-badge__dot {
+  width: 7px; height: 7px; border-radius: 50%; background: currentColor;
+}
+.pd-badge--crowd-low    { background: var(--pd-crowd-low); }
+.pd-badge--crowd-medium { background: var(--pd-crowd-medium); }
+.pd-badge--crowd-high   { background: var(--pd-crowd-high); }
+
+.pd-header__row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.pd-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  color: var(--text-color);
+  margin: 0;
+}
+
+.pd-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+
+.pd-icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.pd-icon-btn:hover { border-color: var(--primary-color); color: var(--primary-color); }
+
+.pd-like-btn.liked { background: #ffe4ec; border-color: #ffe4ec; color: #e11d48; }
+
+.pd-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--border-radius-pill);
+  font-weight: var(--fw-semibold);
+  font-size: 0.95rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition), transform 0.2s ease;
+}
+
+.pd-btn--primary {
+  background: var(--primary-color);
+  color: #fff;
+  box-shadow: 0 10px 22px -10px rgba(31, 138, 84, 0.55);
+}
+.pd-btn--primary:hover { background: var(--primary-color-dark); color: #fff; transform: translateY(-2px); }
+
+.pd-header__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.pd-header__meta i { color: #e0567d; margin-right: 4px; }
+
+.pd-stars i { color: var(--secondary-color); font-size: 0.85rem; }
+.pd-header__rating strong { color: var(--text-color); margin: 0 4px; }
+
+/* ==========================================================================
+   CAROUSEL
+   ========================================================================== */
+.pd-carousel {
+  position: relative;
+  margin: 22px 0 32px;
+  border-radius: var(--pd-radius);
+  overflow: hidden;
+  box-shadow: var(--pd-shadow);
+  background: #eef2f0;
+}
+
+.pd-carousel__viewport {
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.pd-carousel__track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.pd-carousel__slide {
+  flex: 0 0 100%;
+  height: 100%;
+}
+
+.pd-carousel__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pd-carousel__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: var(--transition);
+  z-index: 2;
+}
+
+.pd-carousel__arrow:hover { background: #fff; color: var(--primary-color); }
+.pd-carousel__arrow:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+.pd-carousel__arrow--prev { left: 16px; }
+.pd-carousel__arrow--next { right: 16px; }
+
+.pd-carousel__dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 2;
+}
+
+.pd-carousel__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  padding: 0;
+  transition: var(--transition), width 0.25s ease;
+}
+
+.pd-carousel__dot.is-active {
+  background: #fff;
+  width: 22px;
+  border-radius: var(--border-radius-pill);
+}
+
+/* ==========================================================================
+   BODY LAYOUT
+   ========================================================================== */
+.pd-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 26px;
+  align-items: start;
+}
+
+.pd-main { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+
+.pd-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 92px;
+}
+
+.pd-card {
+  background: #fff;
+  border-radius: var(--pd-radius);
+  box-shadow: var(--pd-shadow);
+  padding: 26px;
+}
+
+.pd-card__title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-h5, 1.15rem);
+  font-weight: 700;
+  margin: 0 0 16px;
+  color: var(--text-color);
+}
+
+.pd-empty { color: var(--text-muted); font-size: 0.9rem; margin: 0; }
+
+/* ==========================================================================
+   TABS (About / History / Importance) — smooth blur+fade cross-transition
+   ========================================================================== */
+.pd-tabs-card { padding: 10px 26px 26px; }
+
+.pd-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 20px;
+}
+
+.pd-tab {
+  border: none;
+  background: transparent;
+  padding: 9px 20px;
+  border-radius: var(--border-radius-pill);
+  font-weight: var(--fw-semibold);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.pd-tab:hover { color: var(--primary-color-dark); background: var(--primary-color-light); }
+
+.pd-tab.is-active {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.pd-tab-content { position: relative; min-height: 96px; transition: height 0.38s ease; }
+
+.pd-tab-panel {
+  display: none;
+  animation: pd-tab-in 0.38s ease both;
+}
+
+.pd-tab-panel.is-active { display: block; }
+
+/* The outgoing panel is pulled out of normal document flow and pinned
+   over the same spot the incoming panel occupies, so the two blur/fade
+   into each other in place (true cross-fade) instead of briefly
+   stacking on top of one another and jumping the page height — that
+   stacking was the "not smooth" bug. .pd-tab-content freezes its own
+   height for the duration via JS so removing the leaving panel from
+   flow doesn't cause a second jump. */
+.pd-tab-panel.is-leaving {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  animation: pd-tab-out 0.22s ease both;
+}
+
+@keyframes pd-tab-out {
+  from { opacity: 1; filter: blur(0); }
+  to   { opacity: 0; filter: blur(6px); }
+}
+
+@keyframes pd-tab-in {
+  from { opacity: 0; filter: blur(6px); transform: translateY(4px); }
+  to   { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+.pd-tab-panel__title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  margin: 0 0 10px;
+}
+
+.pd-tab-panel__text {
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ==========================================================================
+   QUICK FACTS — row 1
+   ========================================================================== */
+.pd-facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.pd-fact {
+  background: #fff;
+  border-radius: var(--pd-radius);
+  box-shadow: var(--pd-shadow);
+  padding: 20px 18px;
+  text-align: center;
+}
+
+.pd-fact__icon {
+  width: 40px; height: 40px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background: var(--primary-color-light);
+  color: var(--primary-color-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+}
+
+.pd-fact__label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.pd-fact__value { font-weight: var(--fw-semibold); color: var(--text-color); }
+
+/* ==========================================================================
+   ACTIVITIES + TRAVEL TIPS — row 2
+   ========================================================================== */
+.pd-lists-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.pd-list-card { padding: 22px; }
+
+.pd-activities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pd-activity-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: var(--border-radius-pill);
+  background: var(--background-color);
+  border: 1px solid var(--border-color);
+  font-size: 0.85rem;
+  font-weight: var(--fw-medium);
+  color: var(--text-color);
+}
+
+.pd-activity-pill__icon { font-size: 1rem; }
+
+.pd-tips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pd-tips li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.pd-tips i { color: var(--secondary-color); margin-top: 2px; flex: none; }
+
+/* ==========================================================================
+   NEARBY HOTELS / RESTAURANTS
+   ========================================================================== */
+.pd-nearby-list { display: flex; flex-direction: column; gap: 14px; }
+
+.pd-nearby-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  border-radius: 12px;
+  transition: background 0.2s ease;
+}
+.pd-nearby-item:hover { background: var(--background-color); }
+
+.pd-nearby-item__img {
+  width: 64px; height: 64px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex: none;
+}
+
+.pd-nearby-item__icon {
+  width: 48px; height: 48px;
+  border-radius: 10px;
+  background: var(--primary-color-light);
+  color: var(--primary-color-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  flex: none;
+}
+
+.pd-nearby-item__body { flex: 1; min-width: 0; }
+.pd-nearby-item__name { font-weight: var(--fw-semibold); margin-bottom: 3px; }
+.pd-nearby-item__meta { font-size: 0.82rem; color: var(--text-muted); }
+.pd-nearby-item__meta i { color: #e0567d; }
+
+.pd-nearby-item__side { text-align: right; flex: none; }
+.pd-nearby-item__price { font-weight: var(--fw-semibold); color: var(--primary-color-dark); margin-bottom: 6px; font-size: 0.9rem; }
+
+.pd-chip-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 16px;
+  border-radius: var(--border-radius-pill);
+  background: var(--primary-color-light);
+  color: var(--primary-color-dark);
+  font-size: 0.8rem;
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.pd-chip-btn:hover { background: var(--primary-color); color: #fff; }
+
+/* ==========================================================================
+   REVIEWS
+   ========================================================================== */
+.pd-reviews-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.pd-reviews-summary { text-align: right; }
+.pd-reviews-summary strong { font-family: var(--font-heading); font-size: 1.5rem; margin-right: 6px; }
+.pd-reviews-summary__count { font-size: 0.8rem; color: var(--text-muted); }
+
+.pd-review-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 22px; }
+
+.pd-review {
+  background: var(--background-color);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.pd-review__top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.pd-review__avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: var(--fw-semibold);
+  font-size: 0.9rem;
+  flex: none;
+}
+
+.pd-review__name { font-weight: var(--fw-semibold); font-size: 0.92rem; }
+.pd-review__date { font-size: 0.76rem; color: var(--text-muted); }
+.pd-review__stars { margin-left: auto; }
+.pd-review__text { margin: 0; color: var(--text-muted); font-size: 0.9rem; line-height: 1.55; }
+
+.pd-review-form {
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.pd-review-form h4 { margin: 0 0 12px; font-family: var(--font-heading); font-size: 1.05rem; }
+
+.pd-review-form__stars { display: flex; gap: 4px; margin-bottom: 14px; }
+.pd-review-form__star {
+  border: none; background: none; cursor: pointer;
+  font-size: 1.3rem; color: var(--border-color);
+  transition: color 0.15s ease, transform 0.15s ease;
+  padding: 2px;
+}
+.pd-review-form__star.is-hovered,
+.pd-review-form__star.is-selected { color: var(--secondary-color); transform: scale(1.08); }
+
+.pd-review-form__text {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+  margin-bottom: 14px;
+  background: #fff;
+}
+.pd-review-form__text:focus { outline: none; border-color: var(--primary-color); }
+
+/* ==========================================================================
+   CROWD LEVEL (compact, sidebar) — animated semicircle arc + 24-hour time
+   picker, built entirely from reviewers' visit_time / crowd_level via
+   ajax/crowd_level.php. Sits above the Interactive Map in the sidebar.
+   ========================================================================== */
+.pd-crowd-mini { display: flex; flex-direction: column; gap: 16px; }
+
+.pd-crowd-mini__arc-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 230px;
+  margin: 0 auto;
+}
+.pd-crowd-mini__arc-svg { width: 100%; display: block; }
+.pd-crowd-mini__arc-track { fill: none; stroke: #e9edea; stroke-width: 16; stroke-linecap: round; }
+.pd-crowd-mini__arc-fill {
+  fill: none;
+  stroke-width: 16;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.9s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.4s ease;
+}
+
+.pd-crowd-mini__center {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  transform: translateX(-50%);
+  text-align: center;
+}
+.pd-crowd-mini__pct {
+  font-family: 'Space Grotesk', serif;
+  font-weight: 700;
+  font-size: 1.9rem;
+  color: var(--text-color);
+  line-height: 1;
+}
+.pd-crowd-mini__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 3px;
+  transition: opacity 0.15s ease;
+}
+
+.pd-crowd-mini__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 12px;
+  font-size: 0.66rem;
+  color: var(--text-muted);
+  justify-content: center;
+}
+.pd-crowd-mini__legend .pd-dot { margin-right: 4px; }
+
+.pd-crowd-mini__time {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--background-alt);
+  border-radius: 999px;
+  padding: 9px 16px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+.pd-crowd-mini__time span { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.pd-crowd-mini__time span i { color: var(--primary-color); }
+.pd-crowd-mini__time select {
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  color: var(--primary-color);
+  cursor: pointer;
+  max-width: 130px;
+}
+.pd-crowd-mini__time select:focus { outline: none; }
+
+.pd-crowd-mini__status {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.4;
+}
+.pd-crowd-mini__status.is-empty { color: #b8331f; }
+
+.pd-crowd-mini__forecast { border-top: 1px dashed var(--border-color, #e5e7eb); padding-top: 16px; }
+.pd-crowd-mini__forecast-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pd-crowd-mini__forecast-label i { color: var(--primary-color); }
+
+.pd-crowd-mini__forecast-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  height: 76px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+.pd-crowd-mini__forecast-bar {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  justify-content: flex-end;
+}
+.pd-crowd-mini__forecast-bar.is-active .pd-crowd-mini__forecast-fill {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+.pd-crowd-mini__forecast-fill {
+  display: block;
+  width: 100%;
+  max-width: 22px;
+  min-height: 4px;
+  border-radius: 5px 5px 0 0;
+  transition: height 0.3s ease;
+}
+.pd-crowd-mini__forecast-fill--very-low  { background: #1fa96a; }
+.pd-crowd-mini__forecast-fill--low       { background: #7bc96f; }
+.pd-crowd-mini__forecast-fill--medium    { background: #f4b23f; }
+.pd-crowd-mini__forecast-fill--high      { background: #f08a3c; }
+.pd-crowd-mini__forecast-fill--very-high { background: #e2513f; }
+.pd-crowd-mini__forecast-fill--none      { background: #d8dee3; }
+.pd-crowd-mini__forecast-time { font-size: 0.6rem; color: var(--text-muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pd-crowd-mini__arc-fill { transition: none; }
+  .pd-crowd-mini__label { transition: none; }
+}
+
+/* ==========================================================================
+   SIDEBAR — MAP
+   ========================================================================== */
+.pd-map {
+  width: 100%;
+  height: 220px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--primary-color-light);
+  margin-bottom: 12px;
+}
+
+.pd-map__coords {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.pd-map__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pd-map__actions .pd-chip-btn { flex: 1; text-align: center; }
+
+/* ==========================================================================
+   SIDEBAR — PLAN YOUR VISIT CTA
+   ========================================================================== */
+.pd-cta-card {
+  background: linear-gradient(150deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+  border-radius: var(--pd-radius);
+  padding: 24px;
+  color: #fff;
+  box-shadow: 0 14px 30px -14px rgba(20, 99, 57, 0.55);
+}
+
+.pd-cta-card__label { font-weight: var(--fw-semibold); font-size: 1.05rem; margin-bottom: 4px; }
+.pd-cta-card__price { font-size: 0.85rem; opacity: 0.85; margin-bottom: 16px; }
+
+.pd-cta-card__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--secondary-color);
+  color: #241a03;
+  font-weight: var(--fw-semibold);
+  padding: 12px;
+  border-radius: var(--border-radius-pill);
+  text-decoration: none;
+  transition: var(--transition), transform 0.2s ease;
+}
+.pd-cta-card__btn:hover { background: var(--secondary-color-dark); color: #241a03; transform: translateY(-2px); }
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 991.98px) {
+  .pd-layout { grid-template-columns: 1fr; }
+  .pd-sidebar { position: static; }
+}
+
+@media (max-width: 767.98px) {
+  .pd { padding-top: 84px; }
+  .pd-facts { grid-template-columns: 1fr; }
+  .pd-lists-row { grid-template-columns: 1fr; }
+  .pd-header__row { flex-direction: column; }
+  .pd-header__actions { align-self: flex-start; }
+  .pd-nearby-item__img { width: 52px; height: 52px; }
+}
+
+@media (max-width: 575.98px) {
+  .pd-container { padding: 0 16px; }
+  .pd-card { padding: 20px; }
+  .pd-title { font-size: 1.7rem; }
+}
+/* ==========================================================================
+   ADDED — Favourite pulse, review crowd fields, crowd analytics chart
+   ========================================================================== */
+
+/* Heart pulse feedback on favourite */
+@keyframes pd-like-pulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+.pd-like-pulse i { animation: pd-like-pulse 0.4s ease; display: inline-block; }
+
+/* Review form — time / crowd-level row */
+.pd-review-form__crowd-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 14px 0 4px;
+}
+
+.pd-review-form__field label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.pd-review-form__select {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 10px;
+  font-family: var(--font-primary);
+  font-size: 0.85rem;
+  background: #fff;
+  color: var(--text-color);
+  transition: border-color 0.2s;
+}
+.pd-review-form__select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-color-light);
+}
+
+@media (max-width: 560px) {
+  .pd-review-form__crowd-row { grid-template-columns: 1fr; }
+}
+
+/* Login prompt shown instead of the review form when logged out */
+.pd-review-login-prompt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 18px;
+  background: var(--primary-color-light);
+  border-radius: var(--pd-radius);
+  color: var(--primary-color-dark);
+  font-size: 0.88rem;
+}
+.pd-review-login-prompt i { font-size: 1.1rem; }
+.pd-review-login-prompt a { color: var(--primary-color-dark); font-weight: 700; text-decoration: underline; }
+
+/* Per-review crowd meta line */
+.pd-review__crowd-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.pd-review__crowd-meta i { margin-right: 4px; }
+
+.pd-review__crowd-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: var(--border-radius-pill, 999px);
+  font-weight: 600;
+}
+.pd-review__crowd-tag--very-low  { background: #e6f5ec; color: #14824f; }
+.pd-review__crowd-tag--low       { background: #e6f5ec; color: #1fa96a; }
+.pd-review__crowd-tag--medium    { background: #fdf3e0; color: #a06a05; }
+.pd-review__crowd-tag--high      { background: #fdece9; color: #b8331f; }
+.pd-review__crowd-tag--very-high { background: #fbe0dc; color: #8f2415; }
+
+@keyframes pd-review-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.pd-review--new { animation: pd-review-in 0.35s ease both; }
+
+/* Crowd Analytics card */
+.pd-card__subtitle {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: -6px;
+  margin-bottom: 16px;
+}
+
+.pd-crowd-chart-wrap {
+  position: relative;
+  height: 220px;
+  margin-bottom: 20px;
+}
+
+.pd-crowd-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.pd-crowd-summary__item {
+  background: var(--background-alt);
+  border-radius: var(--pd-radius);
+  padding: 14px 16px;
+  text-align: center;
+}
+
+.pd-crowd-summary__label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.pd-crowd-summary__value {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--primary-color-dark);
+  font-size: 1.05rem;
+}
+
+@media (max-width: 640px) {
+  .pd-crowd-summary { grid-template-columns: 1fr; }
+}

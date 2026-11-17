@@ -1,0 +1,417 @@
+/* ==========================================================================
+   SMART TOURISM MANAGEMENT SYSTEM
+   Gallery Page Stylesheet (gallery.css)
+   Depends on: style.css (uses its :root variables)
+   Load order: style.css -> navbar.css -> gallery.css -> footer.css
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. GALLERY-SPECIFIC VARIABLES
+   -------------------------------------------------------------------------- */
+:root {
+  --gallery-overlay-gradient: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.75) 100%);
+  --gallery-transition: 0.3s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. HERO — light-green, centered (matches the Destinations page hero
+   exactly: same padding so it clears the fixed navbar the same way,
+   same eyebrow/title/subtitle structure and sizing)
+   -------------------------------------------------------------------------- */
+.gallery-hero {
+  background: linear-gradient(180deg, var(--primary-color-light, #e6f5ec) 0%, #ffffff 100%);
+  padding: 72px 24px 48px;
+  text-align: center;
+}
+
+.gallery-hero__eyebrow {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: var(--primary-color-dark);
+  margin: 0 0 12px;
+  padding-top: 35px;
+}
+
+.gallery-hero-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  color: var(--primary-color-dark);
+  margin: 0 0 12px;
+}
+
+.gallery-hero-subtitle {
+  font-family: var(--font-primary);
+  color: #4b6459;
+  font-size: 1.05rem;
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   3. FILTER PILLS (animated sliding indicator)
+   -------------------------------------------------------------------------- */
+.gallery-filters-section {
+  padding: var(--space-6) var(--space-5) var(--space-5);
+}
+
+.gallery-filters {
+  position: relative;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  background-color: rgba(34, 197, 94, 0.12); /* transparent green track */
+  padding: 6px;
+  border-radius: var(--border-radius-pill);
+}
+
+.gallery-filter-indicator {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  height: calc(100% - 12px);
+  border-radius: var(--border-radius-pill);
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform var(--gallery-transition), width var(--gallery-transition);
+  z-index: 0;
+}
+
+.gallery-filter-pill {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-primary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text-muted);
+  background-color: transparent;
+  border: none;
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--border-radius-pill);
+  cursor: pointer;
+  transition: color var(--gallery-transition);
+}
+
+.gallery-filter-pill:hover:not(.active),
+.gallery-filter-pill:focus-visible:not(.active) {
+  color: var(--primary-color-dark);
+}
+
+.gallery-filter-pill.active {
+  color: var(--primary-color-dark); /* the white sliding indicator supplies the bg */
+}
+
+/* --------------------------------------------------------------------------
+   4. MASONRY GRID (CSS Grid + JS row-span sizing — reflows cleanly on filter)
+   -------------------------------------------------------------------------- */
+.gallery-grid-section {
+  padding: var(--space-6) var(--space-5) var(--space-8);
+}
+
+.gallery-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-auto-rows: 8px; /* fine-grained row unit; JS sets each item's row-span */
+  gap: var(--space-5); /* same card spacing used elsewhere on the site */
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+  transition: opacity var(--gallery-transition), transform var(--gallery-transition), box-shadow var(--gallery-transition);
+}
+
+.gallery-item:hover {
+  box-shadow: var(--box-shadow-hover);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto; /* natural aspect ratio -> genuinely uneven tile heights */
+  display: block;
+  border-radius: 0;
+  transition: transform 0.4s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.04);
+}
+
+/* Filtered-out items — Grid (unlike CSS columns) reflows the rest cleanly */
+.gallery-item.is-hidden {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   5. HOVER OVERLAY (category + location)
+   -------------------------------------------------------------------------- */
+.gallery-item-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--gallery-overlay-gradient);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  opacity: 0;
+  transition: opacity var(--gallery-transition);
+  pointer-events: none;
+}
+
+.gallery-item:hover .gallery-item-overlay,
+.gallery-item:focus-within .gallery-item-overlay {
+  opacity: 1;
+}
+
+.gallery-item-badge {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--text-color);
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--border-radius-pill);
+}
+
+.gallery-item-location {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   6. LIKE BUTTON (grid card + modal)
+   -------------------------------------------------------------------------- */
+.gallery-like-btn {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.85);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--text-color);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity var(--gallery-transition), transform var(--gallery-transition), background-color var(--gallery-transition), color var(--gallery-transition);
+  z-index: 2;
+}
+
+.gallery-item:hover .gallery-like-btn,
+.gallery-item:focus-within .gallery-like-btn,
+.gallery-like-btn.liked {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gallery-like-btn.liked {
+  background-color: #ffe4ec;
+  color: #e11d48;
+}
+
+/* --------------------------------------------------------------------------
+   7. LIGHTBOX MODAL
+   -------------------------------------------------------------------------- */
+.gallery-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--gallery-transition), visibility var(--gallery-transition);
+}
+
+.gallery-modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.gallery-modal {
+  position: relative;
+  max-width: 720px;
+  width: 100%;
+  max-height: 85vh;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  background-color: #000;
+  transform: scale(0.95);
+  transition: transform var(--gallery-transition);
+}
+
+.gallery-modal-backdrop.active .gallery-modal {
+  transform: scale(1);
+}
+
+.gallery-modal-image {
+  width: 100%;
+  max-height: 85vh;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-modal-close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--gallery-transition);
+  z-index: 2;
+}
+
+.gallery-modal-close:hover,
+.gallery-modal-close:focus-visible {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.gallery-modal-info {
+  position: absolute;
+  left: var(--space-5);
+  bottom: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.gallery-modal-badge {
+  align-self: flex-start;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--text-color);
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--border-radius-pill);
+}
+
+.gallery-modal-location {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-bold);
+  color: #ffffff;
+}
+
+.gallery-modal-like {
+  position: absolute;
+  right: var(--space-5);
+  bottom: var(--space-5);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.85);
+  border: none;
+  font-size: 1.25rem;
+  color: var(--text-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--gallery-transition), color var(--gallery-transition);
+  z-index: 2;
+}
+
+.gallery-modal-like.liked {
+  background-color: #ffe4ec;
+  color: #e11d48;
+}
+
+/* --------------------------------------------------------------------------
+   8. EMPTY STATE
+   -------------------------------------------------------------------------- */
+.gallery-empty-message {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: var(--fs-base);
+  padding: var(--space-8) 0;
+}
+
+/* --------------------------------------------------------------------------
+   9. RESPONSIVE BREAKPOINTS
+   -------------------------------------------------------------------------- */
+@media (max-width: 991.98px) {
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+}
+
+@media (max-width: 767.98px) {
+  .gallery-hero-title {
+    font-size: var(--fs-h2);
+  }
+
+  .gallery-modal {
+    max-width: 100%;
+  }
+
+  /* Smooth, contained horizontal scroll instead of wrapping to
+     multiple rows — same pattern as the Destinations category tabs. */
+  .gallery-filters {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+    padding-bottom: var(--space-2);
+  }
+
+  .gallery-filters::-webkit-scrollbar { display: none; }
+
+  .gallery-filter-pill {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   10. ACCESSIBILITY
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .gallery-item,
+  .gallery-item img,
+  .gallery-item-overlay,
+  .gallery-like-btn,
+  .gallery-filter-indicator,
+  .gallery-modal,
+  .gallery-modal-backdrop {
+    transition: none;
+  }
+}

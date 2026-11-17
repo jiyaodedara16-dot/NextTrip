@@ -1,0 +1,91 @@
+
+<main>
+  <section class="hero" id="heroSection" aria-label="Explore India smartly">
+
+    <!-- Two stacked background layers so we can crossfade opacity -->
+    <div class="hero-bg-layer is-active" id="heroBgA"
+         style="background-image: url('assets/images/hero/slide-1.jpg');"></div>
+    <div class="hero-bg-layer" id="heroBgB"></div>
+
+    <div class="hero-overlay" aria-hidden="true"></div>
+
+    <div class="hero-container">
+
+      <div class="hero-content">
+        <p class="hero-badge">
+          <span class="hero-badge-icon" aria-hidden="true">&#9737;</span>
+          Smart Tourism Platform &middot; India
+        </p>
+
+        <h1 class="hero-heading">
+          Explore<br>
+          <span class="hero-heading-accent">India</span><br>
+          Smartly
+        </h1>
+
+        <p class="hero-description">
+          Discover hidden gems, avoid crowded destinations, and plan your perfect
+          journey with trusted travel agents &mdash; all in one place.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#destinations" class="hero-btn hero-btn-primary">Explore Destinations</a>
+          <a href="#packages" class="hero-btn hero-btn-secondary">Plan a Package</a>
+        </div>
+
+        <p class="hero-location">
+          <span class="hero-location-rule" aria-hidden="true"></span>
+          <span id="heroLocationText">Gir Forest &middot; Sasan, Gujarat</span>
+        </p>
+      </div>
+
+      <aside class="hero-info-cards" aria-label="Live trip insights">
+        <div class="hero-card hero-card-weather">
+          <p class="hero-card-label">
+            <span aria-hidden="true">&#9925;</span> Weather &middot; Ahmedabad
+          </p>
+          <p class="hero-card-value">34&deg;C</p>
+          <p class="hero-card-sub">Sunny &middot; Humidity 52%</p>
+        </div>
+
+        <div class="hero-card">
+          <p class="hero-card-eyebrow">CROWD LEVEL &middot; GIR FOREST</p>
+          <div class="hero-crowd-bar">
+            <span class="hero-crowd-fill" style="width: 30%;"></span>
+            <span class="hero-crowd-tag">Low</span>
+          </div>
+          <p class="hero-card-sub">Best time to visit now</p>
+        </div>
+
+        <div class="hero-card">
+          <p class="hero-card-eyebrow">NEARBY HOTELS</p>
+          <div class="hero-hotel-row">
+            <span>Taj Gateway Sasan</span>
+            <span class="hero-hotel-price">&#8377;4,200</span>
+          </div>
+          <div class="hero-hotel-row">
+            <span>Forest Hills Resort</span>
+            <span class="hero-hotel-price">&#8377;2,800</span>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <p class="hero-card-label">
+            <span aria-hidden="true">&#128293;</span> Trending Now
+          </p>
+          <p class="hero-card-title">Rann Utsav 2025</p>
+          <p class="hero-card-sub">Rann of Kutch &middot; 1.2k travellers today</p>
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- Passive progress indicator only — not interactive, not a slider control -->
+    <div class="hero-dots" id="heroDots" aria-hidden="true"></div>
+
+    <button type="button" class="hero-help-btn" aria-label="Help">?</button>
+
+  </section>
+</main>
+
+<script src="hero.js"></script>

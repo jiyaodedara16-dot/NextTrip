@@ -1,0 +1,349 @@
+/* =========================================================
+   packages.css
+   Page-specific styles for the Packages listing page.
+   Reuses destinations.css for the hero, search bar, tabs, filter
+   panel, pills, slider and grid layout (.dest-* classes) — this
+   file only adds the package card itself (.pkg-card) plus the
+   budget/duration pill row already covered by .dest-pill.
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   FILTER PANEL FIX
+   .dest-filter-panel's grid-template-columns (1.3fr auto 1fr auto 1fr)
+   is hardcoded for destinations.php's exact 3 groups + 2 dividers (5
+   grid items). The packages filter panel has 4 groups + 3 dividers
+   (Budget / Duration / Rating / Sort = 7 items), so those extra two
+   items were wrapping onto a second row and reusing the first two
+   column widths (1.3fr, auto) meant for a totally different group —
+   that's the "messed up" layout. This ID-scoped override gives it its
+   own correctly-sized 7-column template, mirrored at the same
+   breakpoints destinations.css already uses so responsive stacking
+   still matches.
+   --------------------------------------------------------- */
+#pkgFilterPanel {
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+}
+@media (max-width: 991.98px) {
+  #pkgFilterPanel { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 767.98px) {
+  #pkgFilterPanel { grid-template-columns: 1fr; }
+}
+
+/* ---------------------------------------------------------
+/* ---------------------------------------------------------
+   GRID — 3 columns instead of destinations.css's default 4, so
+   each card (and its image) is noticeably bigger. Also gives the
+   grid its own responsive steps instead of inheriting .dest-grid's
+   4→2→1 pattern, since 3→2→1 reads better at these card sizes.
+   --------------------------------------------------------- */
+.pkg-grid {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  align-items: stretch; /* every card in a row matches the tallest one */
+}
+@media (max-width: 991.98px) {
+  .pkg-grid { grid-template-columns: repeat(2, 1fr); gap: 22px; }
+}
+@media (max-width: 575.98px) {
+  .pkg-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------------------------------------------------------
+   PACKAGE CARD — matches the reference design: category badge
+   + rating top-left/top-right on the image, price overlaid
+   bottom-left, then title / meta row / destination pills / a
+   hover-revealed itinerary preview / Book Now button.
+   --------------------------------------------------------- */
+.pkg-card {
+  /* flex column + height:100% (the grid already stretches every card in
+     a row to match the tallest sibling) is what lets the Book Now button
+     always land at the same bottom edge instead of drifting up/down
+     depending on how much meta/pill/itinerary content is above it. */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none !important;
+  color: inherit;
+  background: #ffffff;
+  border: 1px solid #eef2f0;
+  border-radius: var(--dest-radius-md);
+  overflow: hidden;
+  box-shadow: var(--dest-shadow-soft);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.pkg-card,
+.pkg-card:hover,
+.pkg-card:focus,
+.pkg-card *,
+.pkg-card:hover *,
+.pkg-card:focus * {
+  text-decoration: none !important;
+}
+
+.pkg-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--dest-shadow-lift);
+  border-color: var(--primary-color-light, #e6f5ec);
+}
+
+.pkg-card:focus-visible {
+  outline: 2px solid var(--primary-color, #1f8a54);
+  outline-offset: 2px;
+}
+
+/* ---- media / image area ---- */
+.pkg-card__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #eef2f0;
+  flex: none; /* keep the photo a fixed height — only the body stretches */
+}
+
+.pkg-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(9, 30, 20, 0.72) 0%, rgba(9, 30, 20, 0.15) 38%, rgba(9, 30, 20, 0) 62%);
+  pointer-events: none;
+}
+
+.pkg-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pkg-card:hover .pkg-card__media img {
+  transform: scale(1.045);
+}
+
+/* Category badge — top-left, solid dark-green pill */
+.pkg-card__tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  font-family: var(--font-primary, sans-serif);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  background: var(--primary-color-dark, #146339);
+  padding: 5px 13px;
+  border-radius: var(--dest-radius-pill);
+}
+
+/* Rating — top-right, no background, just bold white text + gold star */
+.pkg-card__rating {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+.pkg-card__rating i { color: var(--secondary-color, #f4a627); }
+
+/* Favourite heart — small circle, stacked under the rating so it doesn't
+   collide with it (the reference design has no heart at all, but the
+   feature already exists site-wide, so it's kept, just out of the way) */
+.pkg-card__fav {
+  position: absolute;
+  top: 46px;
+  right: 14px;
+  z-index: 3;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s ease, color 0.2s ease;
+}
+.pkg-card__fav:hover { transform: scale(1.08); }
+.pkg-card__fav.liked { color: #e2513f; }
+.pkg-card__fav.liked i { animation: pkg-like-pulse 0.35s ease; }
+
+@keyframes pkg-like-pulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* Price — bottom-left, large bold white text overlaid on the image */
+.pkg-card__price {
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  z-index: 2;
+  color: #ffffff;
+  line-height: 1;
+}
+.pkg-card__price-amount {
+  font-family: var(--font-heading, serif);
+  font-weight: 700;
+  font-size: 1.6rem;
+}
+.pkg-card__price-unit {
+  font-family: var(--font-primary, sans-serif);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.78);
+  margin-left: 2px;
+}
+
+/* ---- body ---- */
+.pkg-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* fills whatever height the grid gave this card */
+  padding: 20px 22px 22px;
+}
+
+.pkg-card__title {
+  font-family: var(--font-heading, serif);
+  font-weight: 600;
+  font-size: 1.22rem;
+  line-height: 1.3;
+  color: var(--primary-color-dark, #146339);
+  margin: 0 0 9px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
+}
+.pkg-card:hover .pkg-card__title { color: var(--primary-color, #1f8a54); }
+
+/* Meta row: duration / agent / best-time season */
+.pkg-card__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-family: var(--font-primary, sans-serif);
+  font-size: 0.85rem;
+  color: #8095a0;
+  margin-bottom: 14px;
+}
+.pkg-card__meta span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.pkg-card__meta i { color: #a7b6ae; font-size: 0.85rem; }
+
+/* Destination pills — places covered */
+.pkg-card__dest-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.pkg-card__dest-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--primary-color-light, #e6f5ec);
+  color: var(--primary-color-dark, #146339);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: var(--dest-radius-pill);
+  white-space: nowrap;
+}
+.pkg-card__dest-pill i { font-size: 0.68rem; color: #e0567d; }
+
+/* Itinerary preview — hidden by default, smoothly revealed on hover */
+.pkg-card__itinerary {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  background: var(--background-alt, #f4f8f6);
+  border-radius: 10px;
+  transition: max-height 0.38s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.28s ease, margin 0.38s ease, padding 0.38s ease;
+}
+.pkg-card:hover .pkg-card__itinerary {
+  max-height: 260px;
+  opacity: 1;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+}
+
+.pkg-card__itinerary-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--primary-color-dark, #146339);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.pkg-card__itinerary-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.76rem;
+  color: #4b6459;
+  padding: 4px 0;
+  line-height: 1.4;
+}
+
+.pkg-card__itinerary-num {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary-color, #1f8a54);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.pkg-card__itinerary-more {
+  font-size: 0.72rem;
+  color: #8095a0;
+  font-style: italic;
+  padding: 4px 0 0 26px;
+}
+
+/* Book Now — inert visual button; the whole card is already the <a>, so
+   clicking anywhere on this span just follows that same link (never a
+   nested <a>, which would be invalid HTML). */
+.pkg-card__book-btn {
+  /* auto margin is what makes every card's button land on the same
+     bottom edge, however much (or little) content sits above it */
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px;
+  border-radius: var(--dest-radius-pill);
+  background: var(--secondary-color, #f4a627);
+  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 0.95rem;
+  flex: none;
+  transition: background 0.2s ease, gap 0.2s ease;
+}
+.pkg-card:hover .pkg-card__book-btn {
+  background: var(--secondary-color-dark, #e0951a);
+  gap: 11px;
+}

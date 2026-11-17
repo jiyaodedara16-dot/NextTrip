@@ -1,0 +1,291 @@
+/* ==========================================================================
+   SMART TOURISM MANAGEMENT SYSTEM
+   Footer Component Stylesheet (footer.css)
+   Depends on: style.css (uses its :root variables)
+   Load order: style.css  ->  navbar.css  ->  footer.css
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. FOOTER-SPECIFIC VARIABLES
+   -------------------------------------------------------------------------- */
+:root {
+  --footer-gradient: linear-gradient(135deg, #08281a 0%, #14532d 45%, #1f8a54 100%);
+  --footer-text: rgba(255, 255, 255, 0.75);
+  --footer-text-strong: #ffffff;
+  --footer-heading-color: var(--secondary-color); /* amber */
+  --footer-brand-accent: var(--secondary-color);  /* amber "Tourism" word */
+  --footer-border: rgba(255, 255, 255, 0.15);
+  --footer-social-bg: rgba(255, 255, 255, 0.1);
+  --footer-social-bg-hover: var(--secondary-color);
+  --footer-transition: 0.25s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. FOOTER SHELL
+   -------------------------------------------------------------------------- */
+.footer {
+  background: var(--footer-gradient);
+  color: var(--footer-text);
+  padding-top: var(--space-8);
+}
+
+.footer-container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+
+/* --------------------------------------------------------------------------
+   3. FOOTER GRID (brand column + 3 link columns)
+   -------------------------------------------------------------------------- */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: var(--space-6);
+  padding-bottom: var(--space-6);
+}
+
+/* --------------------------------------------------------------------------
+   4. BRAND COLUMN
+   -------------------------------------------------------------------------- */
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.footer-logo-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-family: var(--font-primary);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.footer-brand-text {
+  font-family: var(--font-primary);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-lg);
+}
+
+.footer-brand-text .brand-white {
+  color: var(--footer-text-strong);
+}
+
+.footer-brand-text .brand-accent {
+  color: var(--footer-brand-accent);
+}
+
+.footer-description {
+  font-size: var(--fs-sm);
+  line-height: var(--line-height-base);
+  color: var(--footer-text);
+  max-width: 320px;
+  margin-bottom: var(--space-4);
+}
+
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.footer-social-link {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--footer-social-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--footer-transition), transform var(--footer-transition);
+}
+
+.footer-social-link i {
+  font-size: 16px;
+  line-height: 1;
+  color: #ffffff;
+  transition: color var(--footer-transition);
+}
+
+.footer-social-link:hover,
+.footer-social-link:focus-visible {
+  background-color: var(--footer-social-bg-hover);
+  transform: translateY(-3px);
+}
+
+.footer-social-link:hover i,
+.footer-social-link:focus-visible i {
+  color: var(--navbar-brand-dark, #14532d);
+}
+
+/* --------------------------------------------------------------------------
+   5. LINK COLUMNS (Explore / Support)
+   -------------------------------------------------------------------------- */
+.footer-col-title {
+  font-family: var(--font-primary);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--footer-heading-color);
+  margin-bottom: var(--space-4);
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.footer-link {
+  font-size: var(--fs-sm);
+  color: var(--footer-text);
+  transition: color var(--footer-transition), padding-left var(--footer-transition);
+}
+
+.footer-link:hover,
+.footer-link:focus-visible {
+  color: var(--footer-text-strong);
+  text-decoration: none;
+  padding-left: var(--space-1);
+}
+
+/* --------------------------------------------------------------------------
+   6. CONTACT COLUMN
+   -------------------------------------------------------------------------- */
+.footer-contact-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--fs-sm);
+  color: var(--footer-text);
+}
+
+.footer-contact-icon {
+  font-size: 16px;
+  line-height: 1.4;
+  flex-shrink: 0;
+  color: var(--secondary-color);
+}
+
+.footer-contact-item a {
+  color: var(--footer-text);
+  transition: color var(--footer-transition);
+}
+
+.footer-contact-item a:hover,
+.footer-contact-item a:focus-visible {
+  color: var(--footer-text-strong);
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   7. FOOTER BOTTOM BAR
+   -------------------------------------------------------------------------- */
+.footer-divider {
+  border: none;
+  border-top: 1px solid var(--footer-border);
+  margin: 0;
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-4) 0;
+  font-size: var(--fs-sm);
+  color: var(--footer-text);
+}
+
+.footer-credit .footer-heart {
+  color: #f43f5e;
+}
+
+/* --------------------------------------------------------------------------
+   8. RESPONSIVE BREAKPOINTS
+   -------------------------------------------------------------------------- */
+
+/* Tablet: brand column full width, link columns share a row */
+@media (max-width: 991.98px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    row-gap: var(--space-6);
+  }
+
+  .footer-brand,
+  .footer-description,
+  .footer-socials {
+    grid-column: 1 / -1;
+  }
+
+  .footer-brand {
+    margin-top: 0;
+  }
+}
+
+/* Mobile: everything stacks in a single column */
+@media (max-width: 767.98px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .footer-brand,
+  .footer-description,
+  .footer-socials {
+    grid-column: auto;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .footer-container {
+    padding: 0 var(--space-4);
+  }
+
+  .footer-description {
+    max-width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. ACCESSIBILITY
+   -------------------------------------------------------------------------- */
+.footer a:focus-visible,
+.footer-social-link:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-social-link,
+  .footer-link {
+    transition: none;
+  }
+}
